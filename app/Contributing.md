@@ -10,7 +10,7 @@
 ## 👥 Role Summary
 
 | Role | Responsibilities |
-|------|-----------------|
+| :--- | :--- |
 | **Role 1 – Backend Engineer** | MySQL schema design, Laravel REST API, server deployment |
 | **Role 2 – Android UI Architect** | Jetpack Compose screens, Navigation, ViewModel & StateFlow |
 | **Role 3 – Integration & Repository Manager** | Retrofit interfaces, Repository layer, connecting data to ViewModels |
@@ -97,7 +97,7 @@ Before opening a PR, confirm:
 **Package Structure**
 
 ```
-com.hmif.ukrida/
+org.ukrida.hmifukridamobile/
 ├── data/
 │   ├── model/          # Data classes (Dto & domain models)
 │   ├── remote/         # Retrofit API service interfaces
@@ -176,20 +176,24 @@ These rules ensure the Android and Backend teams stay in sync without blocking e
 
 All endpoints **must** return JSON in this exact wrapper format:
 
+**Success (single object)**
 ```json
-// Success (single object)
 {
   "status": "success",
-  "data": { ... }
+  "data": {}
 }
+```
 
-// Success (list)
+**Success (list)**
+```json
 {
   "status": "success",
-  "data": [ ... ]
+  "data": []
 }
+```
 
-// Error
+**Error**
+```json
 {
   "status": "error",
   "message": "Human-readable error description"

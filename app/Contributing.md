@@ -84,30 +84,35 @@ Before opening a PR, confirm:
 **Naming**
 
 | Element | Convention | Example |
-|---------|-----------|---------|
-| Classes | PascalCase | `AnnouncementViewModel` |
+| :--- | :--- | :--- |
+| Classes | PascalCase | `UserViewModel` |
 | Functions & variables | camelCase | `fetchAnnouncements()`, `isLoading` |
 | Constants | SCREAMING_SNAKE_CASE | `BASE_URL`, `TOKEN_KEY` |
-| Layout/Screen files | PascalCase + "Screen" | `HomeScreen.kt`, `LoginScreen.kt` |
-| API response models | PascalCase + "Dto" | `EventDto`, `UserDto` |
-| Database/domain models | PascalCase | `Event`, `Announcement` |
-| Retrofit interfaces | PascalCase + "ApiService" | `EventApiService` |
-| Repository classes | PascalCase + "Repository" | `EventRepository` |
+| Screen files (Composable) | PascalCase + "Screen" | `LoginScreen.kt`, `RegisterScreen.kt` |
+| Domain/data models | PascalCase | `User`, `Event` |
+| Retrofit API interface | `ApiService` (single, shared) | `ApiService` |
+| Retrofit client setup | `RetrofitInstance` | `RetrofitInstance` |
+| Repository classes | PascalCase + "Repository" | `UserRepository` |
+| DI module/object | PascalCase, in `di/` package | `Injection` |
 
 **Package Structure**
 
 ```
 org.ukrida.hmifukridamobile/
 ├── data/
-│   ├── model/          # Data classes (Dto & domain models)
-│   ├── remote/         # Retrofit API service interfaces
-│   └── repository/     # Repository classes
+│   ├── api/            # ApiService interface, RetrofitInstance
+│   ├── model/           # Data/domain models (e.g. User)
+│   └── repository/      # Repository classes (e.g. UserRepository)
+├── di/                  # Dependency injection (e.g. Injection)
 ├── ui/
-│   ├── screens/        # Composable screen files
-│   ├── components/     # Reusable UI components
-│   └── theme/          # Colors, Typography, Shapes
-└── viewmodel/          # ViewModel classes
+│   ├── navigation/      # Navigation graph & bottom nav (e.g. BottomNav.kt)
+│   ├── Screen/           # Composable screen files (e.g. LoginScreen.kt)
+│   └── theme/            # Colors, Typography, Shapes
+├── viewmodel/            # ViewModel classes (e.g. UserViewModel)
+└── MainActivity.kt
 ```
+
+> Follow this exact structure for every feature — e.g. an `Event` feature gets `data/model/Event.kt`, `data/repository/EventRepository.kt`, `ui/Screen/EventScreen.kt`, `viewmodel/EventViewModel.kt`.
 
 **General Rules**
 
@@ -130,7 +135,7 @@ sealed class UiState<out T> {
 **Naming**
 
 | Element | Convention | Example |
-|---------|-----------|---------|
+| :--- | :--- | :--- |
 | Controllers | PascalCase + "Controller" | `EventController` |
 | Models | PascalCase (singular) | `Event`, `User` |
 | Database tables | snake_case (plural) | `events`, `event_registrations` |
@@ -213,7 +218,7 @@ All endpoints **must** return JSON in this exact wrapper format:
 ### Core Endpoint Reference (MVP)
 
 | Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|:---:|
+| :--- | :--- | :--- | :---: |
 | `POST` | `/api/auth/register` | Register new user | ❌ |
 | `POST` | `/api/auth/login` | Login, returns token | ❌ |
 | `POST` | `/api/auth/logout` | Revoke token | ✅ |
@@ -245,7 +250,7 @@ All endpoints **must** return JSON in this exact wrapper format:
 ## 🏁 2-Week Milestone Targets
 
 | Day | Target |
-|-----|--------|
+| :--- | :--- |
 | Day 1–2 | ERD finalized, project repos set up, Compose navigation scaffold done |
 | Day 3–4 | Auth endpoints live in Postman, Login/Register screens built with mock data |
 | Day 5–7 | Announcements & Events endpoints done, Repository + Retrofit layer connected |

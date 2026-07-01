@@ -13,194 +13,56 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import org.ukrida.hmifukridamobile.data.model.Participant
-import androidx.compose.foundation.BorderStroke
+import org.ukrida.hmifukridamobile.data.model.EventRegistrant
 
 @Composable
 fun ParticipantApproveCard(
-
-    participant: Participant
-
+    registrant: EventRegistrant
 ) {
-
-    var status by remember {
-
-        mutableStateOf(participant.status)
-
-    }
-
     Card(
-
         modifier = Modifier.fillMaxWidth(),
-
         shape = RoundedCornerShape(16.dp),
-
         elevation = CardDefaults.cardElevation(5.dp)
-
     ) {
-
-        Column(
-
-            modifier = Modifier.padding(16.dp)
-
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-
-            Row(
-
-                verticalAlignment = Alignment.CenterVertically
-
+            Surface(
+                shape = CircleShape,
+                color = Color(0xFFE3F2FD)
             ) {
-
-                Surface(
-
-                    shape = CircleShape,
-
-                    color = Color(0xFFE3F2FD)
-
-                ) {
-
-                    Icon(
-
-                        imageVector = Icons.Default.Person,
-
-                        contentDescription = null,
-
-                        tint = Color(0xFF1565C0),
-
-                        modifier = Modifier.padding(12.dp)
-
-                    )
-
-                }
-
-                Spacer(
-
-                    modifier = Modifier.width(16.dp)
-
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = null,
+                    tint = Color(0xFF1565C0),
+                    modifier = Modifier.padding(12.dp)
                 )
-
-                Column(
-
-                    modifier = Modifier.weight(1f)
-
-                ) {
-
-                    Text(
-
-                        participant.name,
-
-                        fontWeight = FontWeight.Bold
-
-                    )
-
-                    Text(
-
-                        participant.nim,
-
-                        color = Color.Gray
-
-                    )
-
-                    Spacer(
-                        modifier = Modifier.height(4.dp)
-                    )
-
-                    Text(
-
-                        "${participant.major} • ${participant.semester}",
-
-                        color = Color.Gray,
-
-                        style = MaterialTheme.typography.bodySmall
-
-                    )
-
-                    Spacer(
-                        modifier = Modifier.height(4.dp)
-                    )
-
-                    Text(
-
-                        "Registered : ${participant.registerDate}",
-
-                        color = Color.Gray,
-
-                        style = MaterialTheme.typography.bodySmall
-
-                    )
-
-                }
-
-                StatusChip(status)
-
             }
 
-            Spacer(
+            Spacer(modifier = Modifier.width(16.dp))
 
-                modifier = Modifier.height(16.dp)
+            Column(modifier = Modifier.weight(1f)) {
+                Text(registrant.name, fontWeight = FontWeight.Bold)
+                Text(registrant.nim, color = Color.Gray)
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(registrant.email, color = Color.Gray, style = MaterialTheme.typography.bodySmall)
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    "Registered: ${registrant.registeredAt}",
+                    color = Color.Gray,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
 
+            Text(
+                text = "Registered",
+                color = Color.White,
+                modifier = Modifier
+                    .background(Color(0xFF3498DB), RoundedCornerShape(20.dp))
+                    .padding(horizontal = 10.dp, vertical = 4.dp),
+                style = MaterialTheme.typography.labelSmall
             )
-
-            if (status == "Waiting") {
-
-                Row(
-
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-
-                ) {
-
-                    Button(
-
-                        modifier = Modifier.weight(1f),
-
-                        colors = ButtonDefaults.buttonColors(
-
-                            containerColor = Color(0xFF1565C0)
-
-                        ),
-
-                        onClick = {
-
-                            status = "Approved"
-
-                        }
-
-                    ) {
-
-                        Text("Approve")
-
-                    }
-
-                    OutlinedButton(
-
-                        modifier = Modifier.weight(1f),
-                        border = BorderStroke(
-
-                            1.dp,
-
-                            Color.Red
-
-                        ),
-                        onClick = {
-
-                            status = "Rejected"
-
-                        }
-
-                    ) {
-
-                        Text("Reject")
-
-                    }
-
-
-
-                }
-
-            }
-
         }
-
     }
-
 }

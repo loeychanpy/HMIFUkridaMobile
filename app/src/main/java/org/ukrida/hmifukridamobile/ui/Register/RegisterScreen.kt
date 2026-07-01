@@ -1,6 +1,5 @@
 package org.ukrida.hmifukridamobile.ui.register
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,8 +30,11 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import org.ukrida.hmifukridamobile.R
+import org.ukrida.hmifukridamobile.UiState
+import org.ukrida.hmifukridamobile.di.Injection
 import org.ukrida.hmifukridamobile.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,26 +42,32 @@ import org.ukrida.hmifukridamobile.navigation.Screen
 fun RegisterScreen(
     navController: NavController
 ) {
-
-    val context = LocalContext.current
+    val viewModel: RegisterViewModel = viewModel(
+        factory = RegisterViewModel.factory(Injection.provideUserRepository())
+    )
 
     var nama by remember { mutableStateOf("") }
     var nim by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
-
     var passwordVisible by remember { mutableStateOf(false) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
-
     var agree by remember { mutableStateOf(false) }
+
+    val state = viewModel.uiState
+
+    LaunchedEffect(state) {
+        if (state is UiState.Success) {
+            navController.popBackStack()
+        }
+    }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF4F6FA))
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -68,21 +76,16 @@ fun RegisterScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White
-                ),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(10.dp)
             ) {
-
                 Column(
                     modifier = Modifier.padding(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-
                     Image(
                         painter = painterResource(R.drawable.logohmif),
                         contentDescription = null,
@@ -98,10 +101,7 @@ fun RegisterScreen(
                         color = Color(0xFF1565C0)
                     )
 
-                    Text(
-                        "Informatics Student Union Portal",
-                        color = Color.Gray
-                    )
+                    Text("Informatics Student Union Portal", color = Color.Gray)
 
                     Spacer(modifier = Modifier.height(24.dp))
 
@@ -109,21 +109,16 @@ fun RegisterScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-
                         Text(
                             "Log In",
                             color = Color.Gray,
-                            modifier = Modifier.clickable {
-                                navController.popBackStack()
-                            }
+                            modifier = Modifier.clickable { navController.popBackStack() }
                         )
-
                         Text(
                             "Register",
                             color = Color(0xFF1565C0),
                             fontWeight = FontWeight.Bold
                         )
-
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -132,176 +127,103 @@ fun RegisterScreen(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    // Nama
-
                     OutlinedTextField(
                         value = nama,
                         onValueChange = { nama = it },
                         modifier = Modifier.fillMaxWidth(),
                         label = { Text("Nama Lengkap") },
-                        leadingIcon = {
-                            Icon(Icons.Default.Person, null)
-                        },
+                        leadingIcon = { Icon(Icons.Default.Person, null) },
                         shape = RoundedCornerShape(14.dp),
-
                         singleLine = true,
-
                         colors = OutlinedTextFieldDefaults.colors(
-
                             focusedBorderColor = Color(0xFF1565C0),
-
                             unfocusedBorderColor = Color.LightGray
-
                         )
-
                     )
 
                     Spacer(modifier = Modifier.height(14.dp))
-
-                    // NIM
 
                     OutlinedTextField(
                         value = nim,
                         onValueChange = { nim = it },
                         modifier = Modifier.fillMaxWidth(),
                         label = { Text("NIM") },
-                        leadingIcon = {
-                            Icon(Icons.Default.Badge, null)
-                        },
+                        leadingIcon = { Icon(Icons.Default.Badge, null) },
                         shape = RoundedCornerShape(14.dp),
-
                         singleLine = true,
-
                         colors = OutlinedTextFieldDefaults.colors(
-
                             focusedBorderColor = Color(0xFF1565C0),
-
                             unfocusedBorderColor = Color.LightGray
-
                         )
                     )
 
                     Spacer(modifier = Modifier.height(14.dp))
-
-                    // Email
 
                     OutlinedTextField(
                         value = email,
                         onValueChange = { email = it },
                         modifier = Modifier.fillMaxWidth(),
                         label = { Text("Email") },
-                        leadingIcon = {
-                            Icon(Icons.Default.Email, null)
-                        },
+                        leadingIcon = { Icon(Icons.Default.Email, null) },
                         shape = RoundedCornerShape(14.dp),
-
                         singleLine = true,
-
                         colors = OutlinedTextFieldDefaults.colors(
-
                             focusedBorderColor = Color(0xFF1565C0),
-
                             unfocusedBorderColor = Color.LightGray
-
                         )
                     )
 
                     Spacer(modifier = Modifier.height(14.dp))
-
-                    // Password
 
                     OutlinedTextField(
                         value = password,
                         onValueChange = { password = it },
                         modifier = Modifier.fillMaxWidth(),
                         label = { Text("Password") },
-                        leadingIcon = {
-                            Icon(Icons.Default.Lock, null)
-                        },
+                        leadingIcon = { Icon(Icons.Default.Lock, null) },
                         trailingIcon = {
-
-                            IconButton(
-                                onClick = {
-                                    passwordVisible = !passwordVisible
-                                }
-                            ) {
-
+                            IconButton(onClick = { passwordVisible = !passwordVisible }) {
                                 Icon(
-                                    if (passwordVisible)
-                                        Icons.Default.Visibility
-                                    else
-                                        Icons.Default.VisibilityOff,
+                                    if (passwordVisible) Icons.Default.Visibility
+                                    else Icons.Default.VisibilityOff,
                                     null
                                 )
-
                             }
-
                         },
-                        visualTransformation =
-                            if (passwordVisible)
-                                VisualTransformation.None
-                            else
-                                PasswordVisualTransformation(),
+                        visualTransformation = if (passwordVisible) VisualTransformation.None
+                        else PasswordVisualTransformation(),
                         shape = RoundedCornerShape(14.dp),
-
                         singleLine = true,
-
                         colors = OutlinedTextFieldDefaults.colors(
-
                             focusedBorderColor = Color(0xFF1565C0),
-
                             unfocusedBorderColor = Color.LightGray
-
                         )
                     )
 
                     Spacer(modifier = Modifier.height(14.dp))
-
-                    // Confirm Password
 
                     OutlinedTextField(
                         value = confirmPassword,
                         onValueChange = { confirmPassword = it },
                         modifier = Modifier.fillMaxWidth(),
                         label = { Text("Konfirmasi Password") },
-                        leadingIcon = {
-                            Icon(Icons.Default.Lock, null)
-                        },
+                        leadingIcon = { Icon(Icons.Default.Lock, null) },
                         trailingIcon = {
-
-                            IconButton(
-                                onClick = {
-                                    confirmPasswordVisible =
-                                        !confirmPasswordVisible
-                                }
-                            ) {
-
+                            IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
                                 Icon(
-                                    if (confirmPasswordVisible)
-                                        Icons.Default.Visibility
-                                    else
-                                        Icons.Default.VisibilityOff,
+                                    if (confirmPasswordVisible) Icons.Default.Visibility
+                                    else Icons.Default.VisibilityOff,
                                     null
                                 )
-
                             }
-
                         },
-                        visualTransformation =
-                            if (confirmPasswordVisible)
-                                VisualTransformation.None
-                            else
-                                PasswordVisualTransformation(),
+                        visualTransformation = if (confirmPasswordVisible) VisualTransformation.None
+                        else PasswordVisualTransformation(),
                         shape = RoundedCornerShape(14.dp),
-
                         singleLine = true,
-
                         colors = OutlinedTextFieldDefaults.colors(
-
                             focusedBorderColor = Color(0xFF1565C0),
-
                             unfocusedBorderColor = Color.LightGray
-
                         )
                     )
 
@@ -310,108 +232,48 @@ fun RegisterScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .toggleable(
-                                value = agree,
-                                onValueChange = {
-                                    agree = it
-                                }
-                            ),
-
+                            .toggleable(value = agree, onValueChange = { agree = it }),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-
-                        Checkbox(
-                            checked = agree,
-                            onCheckedChange = null
-                        )
-
-                        Text(
-                            "Saya menyetujui syarat & ketentuan"
-                        )
-
+                        Checkbox(checked = agree, onCheckedChange = null)
+                        Text("Saya menyetujui syarat & ketentuan")
                     }
 
                     Spacer(modifier = Modifier.height(20.dp))
 
+                    if (state is UiState.Error) {
+                        Text(text = state.message, color = Color.Red, fontSize = 13.sp)
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+
                     Button(
                         onClick = {
-
-                            if (
-                                nama.isBlank() ||
-                                nim.isBlank() ||
-                                email.isBlank() ||
-                                password.isBlank() ||
-                                confirmPassword.isBlank()
-                            ) {
-
-                                Toast.makeText(
-                                    context,
-                                    "Semua data wajib diisi",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                            } else if (password != confirmPassword) {
-
-                                Toast.makeText(
-                                    context,
-                                    "Password tidak sama",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                            } else if (!agree) {
-
-                                Toast.makeText(
-                                    context,
-                                    "Centang persetujuan terlebih dahulu",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                            } else {
-
-                                Toast.makeText(
-                                    context,
-                                    "Registrasi berhasil",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                                navController.popBackStack()
-
-                            }
-
+                            viewModel.register(nama, nim, email, password, confirmPassword, agree)
                         },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(55.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF1565C0)
-                        )
+                        enabled = state !is UiState.Loading,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1565C0))
                     ) {
-
-                        Text(
-                            "Create Account",
-                            color = Color.White
-                        )
-
+                        if (state is UiState.Loading) {
+                            CircularProgressIndicator(
+                                color = Color.White,
+                                modifier = Modifier.size(24.dp),
+                                strokeWidth = 2.dp
+                            )
+                        } else {
+                            Text("Create Account", color = Color.White)
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    TextButton(
-                        onClick = {
-                            navController.popBackStack()
-                        }
-                    ) {
-
+                    TextButton(onClick = { navController.popBackStack() }) {
                         Text("Sudah punya akun? Log In")
-
                     }
-
                 }
-
             }
-
         }
-
     }
-
 }

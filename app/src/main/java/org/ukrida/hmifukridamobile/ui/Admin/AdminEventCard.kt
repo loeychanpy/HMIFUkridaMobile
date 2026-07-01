@@ -63,7 +63,7 @@ fun AdminEventCard(
             .fillMaxWidth()
             .clickable {
                 navController.navigate(
-                    Screen.AdminEventDetail.route
+                    Screen.AdminEventDetail.createRoute(event.id)
                 )
             },
         shape = RoundedCornerShape(20.dp),

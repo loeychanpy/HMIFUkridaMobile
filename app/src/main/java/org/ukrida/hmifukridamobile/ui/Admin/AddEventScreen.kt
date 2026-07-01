@@ -161,7 +161,7 @@ fun AddEventScreen(
 
                     PublishButton(
                         onClick = {
-                            if (title.isBlank() || date.isBlank() || description.isBlank() || location.isBlank()) return@PublishButton
+                            if (title.isBlank() || date.isBlank() || time.isBlank() || description.isBlank() || location.isBlank()) return@PublishButton
                             viewModel.createEvent(title, date, time, description, location)
                         }
                     )

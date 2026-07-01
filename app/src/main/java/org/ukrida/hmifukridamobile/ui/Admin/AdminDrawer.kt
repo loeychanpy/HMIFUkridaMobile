@@ -168,9 +168,9 @@ fun AdminDrawer(
 
         ){
 
-            navController.navigate(
-                Screen.Login.route
-            )
+            navController.navigate(Screen.Login.route) {
+                popUpTo(0) { inclusive = true }
+            }
 
         }
 

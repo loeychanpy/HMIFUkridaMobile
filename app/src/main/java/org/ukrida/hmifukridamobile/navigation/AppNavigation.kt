@@ -11,6 +11,7 @@ import org.ukrida.hmifukridamobile.ui.admin.AdminDashboard
 import org.ukrida.hmifukridamobile.ui.admin.AdminEventDetailScreen
 import org.ukrida.hmifukridamobile.ui.admin.EditEventScreen
 import org.ukrida.hmifukridamobile.ui.admin.HistoryDetailScreen
+import org.ukrida.hmifukridamobile.ui.admin.HistoryScreen
 import org.ukrida.hmifukridamobile.ui.detail.DetailEventScreen
 import org.ukrida.hmifukridamobile.ui.home.HomeScreen
 import org.ukrida.hmifukridamobile.ui.login.LoginScreen
@@ -79,8 +80,16 @@ fun AppNavigation() {
             AdminEventDetailScreen(navController, eventId)
         }
 
+        composable(Screen.History.route) {
+            HistoryScreen(navController)
+        }
+
         composable(Screen.HistoryDetail.route) {
             HistoryDetailScreen(navController)
+        }
+
+        composable(Screen.Participant.route) {
+            AdminDashboard(navController)
         }
     }
 }

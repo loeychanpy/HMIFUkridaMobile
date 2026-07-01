@@ -1,12 +1,22 @@
 package org.ukrida.hmifukridamobile.data.repository
 
+import com.google.gson.JsonSyntaxException
 import org.ukrida.hmifukridamobile.UiState
 import org.ukrida.hmifukridamobile.data.api.ApiService
 import org.ukrida.hmifukridamobile.data.model.Announcement
 import org.ukrida.hmifukridamobile.data.model.Event
 import org.ukrida.hmifukridamobile.data.model.EventRegistrant
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 class EventRepository(private val api: ApiService) {
+
+    private fun friendlyError(e: Exception): String = when (e) {
+        is UnknownHostException -> "Tidak dapat terhubung ke server. Periksa koneksi internet Anda."
+        is SocketTimeoutException -> "Koneksi ke server timeout. Silahkan coba lagi."
+        is JsonSyntaxException -> "Terjadi kesalahan pada server. Silahkan coba lagi."
+        else -> "Terjadi kesalahan. Silahkan coba lagi."
+    }
 
     suspend fun getEvents(token: String): UiState<List<Event>> {
         return try {
@@ -17,7 +27,7 @@ class EventRepository(private val api: ApiService) {
                 UiState.Error(response.message ?: "Gagal memuat event.")
             }
         } catch (e: Exception) {
-            UiState.Error(e.message ?: "Terjadi kesalahan jaringan.")
+            UiState.Error(friendlyError(e))
         }
     }
 
@@ -30,7 +40,7 @@ class EventRepository(private val api: ApiService) {
                 UiState.Error(response.message ?: "Event tidak ditemukan.")
             }
         } catch (e: Exception) {
-            UiState.Error(e.message ?: "Terjadi kesalahan jaringan.")
+            UiState.Error(friendlyError(e))
         }
     }
 
@@ -43,7 +53,7 @@ class EventRepository(private val api: ApiService) {
                 UiState.Error(response.message ?: "Belum ada histori acara.")
             }
         } catch (e: Exception) {
-            UiState.Error(e.message ?: "Terjadi kesalahan jaringan.")
+            UiState.Error(friendlyError(e))
         }
     }
 
@@ -68,7 +78,7 @@ class EventRepository(private val api: ApiService) {
                 UiState.Error(response.message ?: "Gagal membuat event.")
             }
         } catch (e: Exception) {
-            UiState.Error(e.message ?: "Terjadi kesalahan jaringan.")
+            UiState.Error(friendlyError(e))
         }
     }
 
@@ -82,7 +92,7 @@ class EventRepository(private val api: ApiService) {
                 UiState.Error(response.message ?: "Gagal menghapus event.")
             }
         } catch (e: Exception) {
-            UiState.Error(e.message ?: "Terjadi kesalahan jaringan.")
+            UiState.Error(friendlyError(e))
         }
     }
 
@@ -96,7 +106,7 @@ class EventRepository(private val api: ApiService) {
                 UiState.Error(response.message ?: "Gagal mendaftar ke event.")
             }
         } catch (e: Exception) {
-            UiState.Error(e.message ?: "Terjadi kesalahan jaringan.")
+            UiState.Error(friendlyError(e))
         }
     }
 
@@ -109,7 +119,7 @@ class EventRepository(private val api: ApiService) {
                 UiState.Error(response.message ?: "Gagal memuat peserta.")
             }
         } catch (e: Exception) {
-            UiState.Error(e.message ?: "Terjadi kesalahan jaringan.")
+            UiState.Error(friendlyError(e))
         }
     }
 
@@ -122,7 +132,7 @@ class EventRepository(private val api: ApiService) {
                 UiState.Error(response.message ?: "Gagal memuat pengumuman.")
             }
         } catch (e: Exception) {
-            UiState.Error(e.message ?: "Terjadi kesalahan jaringan.")
+            UiState.Error(friendlyError(e))
         }
     }
 
@@ -136,7 +146,7 @@ class EventRepository(private val api: ApiService) {
                 UiState.Error(response.message ?: "Gagal membuat pengumuman.")
             }
         } catch (e: Exception) {
-            UiState.Error(e.message ?: "Terjadi kesalahan jaringan.")
+            UiState.Error(friendlyError(e))
         }
     }
 
@@ -150,7 +160,7 @@ class EventRepository(private val api: ApiService) {
                 UiState.Error(response.message ?: "Gagal menghapus pengumuman.")
             }
         } catch (e: Exception) {
-            UiState.Error(e.message ?: "Terjadi kesalahan jaringan.")
+            UiState.Error(friendlyError(e))
         }
     }
 }

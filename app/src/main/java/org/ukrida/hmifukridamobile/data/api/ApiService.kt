@@ -22,10 +22,10 @@ interface ApiService {
     suspend fun login(@Body request: LoginRequest): AuthResponse
 
     @POST("routes/users.php")
-    suspend fun register(@Body request: RegisterRequest): ApiResponse<Nothing>
+    suspend fun register(@Body request: RegisterRequest): ApiResponse<Unit>
 
     @POST("routes/logout.php")
-    suspend fun logout(@Header("Authorization") token: String): ApiResponse<Nothing>
+    suspend fun logout(@Header("Authorization") token: String): ApiResponse<Unit>
 
     // --- Users ---
 
@@ -37,6 +37,9 @@ interface ApiService {
     @GET("routes/events.php")
     suspend fun getEvents(@Header("Authorization") token: String): ApiResponse<List<Event>>
 
+    @GET("routes/event_history.php")
+    suspend fun getEventHistory(@Header("Authorization") token: String): ApiResponse<List<Event>>
+
     @GET("routes/event_detail.php")
     suspend fun getEventById(
         @Header("Authorization") token: String,
@@ -47,13 +50,13 @@ interface ApiService {
     suspend fun createEvent(
         @Header("Authorization") token: String,
         @Body body: Map<String, String>
-    ): ApiResponse<Nothing>
+    ): ApiResponse<Unit>
 
     @POST("routes/delete_event.php")
     suspend fun deleteEvent(
         @Header("Authorization") token: String,
         @Body body: Map<String, Int>
-    ): ApiResponse<Nothing>
+    ): ApiResponse<Unit>
 
     // --- Event Registrations ---
 
@@ -61,7 +64,7 @@ interface ApiService {
     suspend fun registerForEvent(
         @Header("Authorization") token: String,
         @Body body: Map<String, Int>
-    ): ApiResponse<Nothing>
+    ): ApiResponse<Unit>
 
     @GET("routes/event_registrants.php")
     suspend fun getEventRegistrants(
@@ -78,5 +81,11 @@ interface ApiService {
     suspend fun createAnnouncement(
         @Header("Authorization") token: String,
         @Body body: Map<String, String>
-    ): ApiResponse<Nothing>
+    ): ApiResponse<Unit>
+
+    @POST("routes/delete_announcement.php")
+    suspend fun deleteAnnouncement(
+        @Header("Authorization") token: String,
+        @Body body: Map<String, Int>
+    ): ApiResponse<Unit>
 }

@@ -1,4 +1,4 @@
-package org.ukrida.hmifukridamobile.ui.detail
+package org.ukrida.hmifukridamobile.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,49 +12,38 @@ import org.ukrida.hmifukridamobile.data.local.TokenManager
 import org.ukrida.hmifukridamobile.data.model.Event
 import org.ukrida.hmifukridamobile.data.repository.EventRepository
 
-class DetailEventViewModel(
-    private val eventId: Int,
+class HomeViewModel(
     private val eventRepo: EventRepository,
     private val tokenManager: TokenManager
 ) : ViewModel() {
 
-    var eventState by mutableStateOf<UiState<Event>>(UiState.Loading)
+    var eventsState by mutableStateOf<UiState<List<Event>>>(UiState.Loading)
         private set
 
-    var registerState by mutableStateOf<UiState<String>?>(null)
+    var userName by mutableStateOf("")
         private set
 
     init {
-        loadEvent()
+        loadData()
     }
 
-    private fun loadEvent() {
+    private fun loadData() {
         viewModelScope.launch {
+            userName = tokenManager.getName() ?: ""
             val token = tokenManager.getToken() ?: run {
-                eventState = UiState.Error("Sesi tidak ditemukan. Silakan login ulang.")
+                eventsState = UiState.Error("Sesi tidak ditemukan. Silakan login ulang.")
                 return@launch
             }
-            eventState = eventRepo.getEventById(token, eventId)
-        }
-    }
-
-    fun registerForEvent() {
-        viewModelScope.launch {
-            registerState = UiState.Loading
-            val token = tokenManager.getToken() ?: run {
-                registerState = UiState.Error("Sesi tidak ditemukan. Silakan login ulang.")
-                return@launch
-            }
-            registerState = eventRepo.registerForEvent(token, eventId)
+            eventsState = eventRepo.getEvents(token)
         }
     }
 
     companion object {
-        fun factory(eventId: Int, eventRepo: EventRepository, tokenManager: TokenManager) =
+        fun factory(eventRepo: EventRepository, tokenManager: TokenManager) =
             object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T =
-                    DetailEventViewModel(eventId, eventRepo, tokenManager) as T
+                    HomeViewModel(eventRepo, tokenManager) as T
             }
     }
 }

@@ -1,5 +1,6 @@
 package org.ukrida.hmifukridamobile.ui.admin
 
+import org.ukrida.hmifukridamobile.ui.viewmodel.AddEventViewModel
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -122,16 +123,22 @@ fun AddEventScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        DatePickerField(
-                            modifier = Modifier.weight(1f),
-                            value = date,
-                            onValueChange = { date = it }
-                        )
-                        TimePickerField(
-                            modifier = Modifier.weight(1f),
-                            value = time,
-                            onValueChange = { time = it }
-                        )
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(text = "Date *", style = MaterialTheme.typography.titleSmall)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            DatePickerField(
+                                value = date,
+                                onValueChange = { date = it }
+                            )
+                        }
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(text = "Time *", style = MaterialTheme.typography.titleSmall)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            TimePickerField(
+                                value = time,
+                                onValueChange = { time = it }
+                            )
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(18.dp))

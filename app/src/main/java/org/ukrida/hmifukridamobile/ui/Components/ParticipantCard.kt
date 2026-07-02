@@ -1,4 +1,4 @@
-package org.ukrida.hmifukridamobile.ui.Components
+package org.ukrida.hmifukridamobile.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

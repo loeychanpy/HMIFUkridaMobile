@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.clickable
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.LocationOn
@@ -51,10 +53,16 @@ fun AdminEventCard(
 )
 {
 
-    var expanded by remember {
+    var expanded by remember { mutableStateOf(false) }
 
-        mutableStateOf(false)
-
+    val isOpen = remember(event.eventDate) {
+        runCatching {
+            val eventDateTime = LocalDateTime.parse(
+                event.eventDate.take(16),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+            )
+            eventDateTime.isAfter(LocalDateTime.now())
+        }.getOrDefault(false)
     }
 
     Card(
@@ -162,7 +170,7 @@ fun AdminEventCard(
                                     expanded = false
 
                                     navController.navigate(
-                                        Screen.EditEvent.route
+                                        Screen.EditEvent.createRoute(event.id)
                                     )
 
                                 }
@@ -182,7 +190,7 @@ fun AdminEventCard(
                                     expanded = false
 
                                     navController.navigate(
-                                        Screen.History.route
+                                        Screen.HistoryDetail.createRoute(event.id)
                                     )
 
                                 }
@@ -273,7 +281,7 @@ fun AdminEventCard(
 
                 Text(
 
-                    text = "👥 120 Participants",
+                    text = "👥 ${event.participantCount} Participants",
 
                     style = MaterialTheme.typography.bodyMedium,
 
@@ -291,7 +299,7 @@ fun AdminEventCard(
 
                     modifier = Modifier
                         .background(
-                            Color(0xFFE8F5E9),
+                            if (isOpen) Color(0xFFE8F5E9) else Color(0xFFEEEEEE),
                             RoundedCornerShape(50.dp)
                         )
                         .padding(
@@ -303,9 +311,9 @@ fun AdminEventCard(
 
                     Text(
 
-                        text = "Open Registration",
+                        text = if (isOpen) "Open Registration" else "Closed",
 
-                        color = Color(0xFF2E7D32),
+                        color = if (isOpen) Color(0xFF2E7D32) else Color.Gray,
 
                         style = MaterialTheme.typography.labelMedium,
 

@@ -1,2 +1,2 @@
-package org.ukrida.hmifukridamobile.ui.Components
+package org.ukrida.hmifukridamobile.ui.components
 

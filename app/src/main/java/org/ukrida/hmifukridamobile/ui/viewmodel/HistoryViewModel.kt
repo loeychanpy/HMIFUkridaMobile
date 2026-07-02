@@ -1,4 +1,4 @@
-package org.ukrida.hmifukridamobile.ui.registered
+package org.ukrida.hmifukridamobile.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,25 +12,25 @@ import org.ukrida.hmifukridamobile.data.local.TokenManager
 import org.ukrida.hmifukridamobile.data.model.Event
 import org.ukrida.hmifukridamobile.data.repository.EventRepository
 
-class RegisteredViewModel(
+class HistoryViewModel(
     private val eventRepo: EventRepository,
     private val tokenManager: TokenManager
 ) : ViewModel() {
 
-    var eventsState by mutableStateOf<UiState<List<Event>>>(UiState.Loading)
+    var historyState by mutableStateOf<UiState<List<Event>>>(UiState.Loading)
         private set
 
     init {
-        loadEvents()
+        loadHistory()
     }
 
-    private fun loadEvents() {
+    private fun loadHistory() {
         viewModelScope.launch {
             val token = tokenManager.getToken() ?: run {
-                eventsState = UiState.Error("Sesi tidak ditemukan. Silakan login ulang.")
+                historyState = UiState.Error("Sesi tidak ditemukan. Silakan login ulang.")
                 return@launch
             }
-            eventsState = eventRepo.getEventHistory(token)
+            historyState = eventRepo.getEventHistory(token)
         }
     }
 
@@ -39,7 +39,7 @@ class RegisteredViewModel(
             object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T =
-                    RegisteredViewModel(eventRepo, tokenManager) as T
+                    HistoryViewModel(eventRepo, tokenManager) as T
             }
     }
 }

@@ -12,11 +12,13 @@ import org.ukrida.hmifukridamobile.ui.admin.AdminEventDetailScreen
 import org.ukrida.hmifukridamobile.ui.admin.EditEventScreen
 import org.ukrida.hmifukridamobile.ui.admin.HistoryDetailScreen
 import org.ukrida.hmifukridamobile.ui.admin.HistoryScreen
+import org.ukrida.hmifukridamobile.ui.admin.ManageEventsScreen
+import org.ukrida.hmifukridamobile.ui.admin.UserManagementScreen
+import org.ukrida.hmifukridamobile.ui.registered.QrTicketScreen
 import org.ukrida.hmifukridamobile.ui.detail.DetailEventScreen
 import org.ukrida.hmifukridamobile.ui.home.HomeScreen
 import org.ukrida.hmifukridamobile.ui.login.LoginScreen
 import org.ukrida.hmifukridamobile.ui.profile.ProfileScreen
-import org.ukrida.hmifukridamobile.ui.register.RegisterEventScreen
 import org.ukrida.hmifukridamobile.ui.register.RegisterScreen
 import org.ukrida.hmifukridamobile.ui.registered.RegisteredScreen
 
@@ -48,10 +50,6 @@ fun AppNavigation() {
             DetailEventScreen(navController, eventId)
         }
 
-        composable(Screen.RegisterEvent.route) {
-            RegisterEventScreen(navController)
-        }
-
         composable(Screen.Profile.route) {
             ProfileScreen(navController)
         }
@@ -64,8 +62,12 @@ fun AppNavigation() {
             AddEventScreen(navController)
         }
 
-        composable(Screen.EditEvent.route) {
-            EditEventScreen(navController)
+        composable(
+            route = Screen.EditEvent.route,
+            arguments = listOf(navArgument("eventId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val eventId = backStackEntry.arguments?.getInt("eventId") ?: return@composable
+            EditEventScreen(navController, eventId)
         }
 
         composable(Screen.Registered.route) {
@@ -80,16 +82,37 @@ fun AppNavigation() {
             AdminEventDetailScreen(navController, eventId)
         }
 
+        composable(Screen.ManageEvents.route) {
+            ManageEventsScreen(navController)
+        }
+
+        composable(Screen.UserManagement.route) {
+            UserManagementScreen(navController)
+        }
+
+        composable(
+            route = Screen.QrTicket.route,
+            arguments = listOf(
+                navArgument("registrationId") { type = NavType.IntType },
+                navArgument("eventTitle") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val registrationId = backStackEntry.arguments?.getInt("registrationId") ?: return@composable
+            val eventTitle = backStackEntry.arguments?.getString("eventTitle")
+                ?.let { java.net.URLDecoder.decode(it, "UTF-8") } ?: ""
+            QrTicketScreen(navController, eventTitle, registrationId)
+        }
+
         composable(Screen.History.route) {
             HistoryScreen(navController)
         }
 
-        composable(Screen.HistoryDetail.route) {
-            HistoryDetailScreen(navController)
-        }
-
-        composable(Screen.Participant.route) {
-            AdminDashboard(navController)
+        composable(
+            route = Screen.HistoryDetail.route,
+            arguments = listOf(navArgument("eventId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val eventId = backStackEntry.arguments?.getInt("eventId") ?: return@composable
+            HistoryDetailScreen(navController, eventId)
         }
     }
 }

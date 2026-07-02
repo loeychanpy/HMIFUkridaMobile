@@ -44,6 +44,19 @@ class EventRepository(private val api: ApiService) {
         }
     }
 
+    suspend fun getMyRegistrations(token: String): UiState<List<Event>> {
+        return try {
+            val response = api.getMyRegistrations("Bearer $token")
+            if (response.status == "success") {
+                UiState.Success(response.data ?: emptyList())
+            } else {
+                UiState.Error(response.message ?: "Belum ada event yang didaftarkan.")
+            }
+        } catch (e: Exception) {
+            UiState.Error(friendlyError(e))
+        }
+    }
+
     suspend fun getEventHistory(token: String): UiState<List<Event>> {
         return try {
             val response = api.getEventHistory("Bearer $token")
@@ -76,6 +89,33 @@ class EventRepository(private val api: ApiService) {
                 UiState.Success(response.message ?: "Event berhasil dibuat.")
             } else {
                 UiState.Error(response.message ?: "Gagal membuat event.")
+            }
+        } catch (e: Exception) {
+            UiState.Error(friendlyError(e))
+        }
+    }
+
+    suspend fun updateEvent(
+        token: String,
+        id: Int,
+        title: String,
+        eventDate: String,
+        description: String,
+        location: String
+    ): UiState<String> {
+        return try {
+            val body = mapOf(
+                "id"          to id.toString(),
+                "title"       to title,
+                "event_date"  to eventDate,
+                "description" to description,
+                "location"    to location
+            )
+            val response = api.updateEvent("Bearer $token", body)
+            if (response.status == "success") {
+                UiState.Success(response.message ?: "Event berhasil diperbarui.")
+            } else {
+                UiState.Error(response.message ?: "Gagal memperbarui event.")
             }
         } catch (e: Exception) {
             UiState.Error(friendlyError(e))
@@ -117,6 +157,34 @@ class EventRepository(private val api: ApiService) {
                 UiState.Success(response.data ?: emptyList())
             } else {
                 UiState.Error(response.message ?: "Gagal memuat peserta.")
+            }
+        } catch (e: Exception) {
+            UiState.Error(friendlyError(e))
+        }
+    }
+
+    suspend fun checkIn(token: String, registrationId: Int): UiState<String> {
+        return try {
+            val body = mapOf("registration_id" to registrationId)
+            val response = api.checkIn("Bearer $token", body)
+            if (response.status == "success") {
+                UiState.Success(response.message ?: "Kehadiran berhasil dicatat.")
+            } else {
+                UiState.Error(response.message ?: "Gagal mencatat kehadiran.")
+            }
+        } catch (e: Exception) {
+            UiState.Error(friendlyError(e))
+        }
+    }
+
+    suspend fun markAttendance(token: String, registrationId: Int, attended: Boolean): UiState<String> {
+        return try {
+            val body = mapOf<String, Any>("registration_id" to registrationId, "attended" to if (attended) 1 else 0)
+            val response = api.markAttendance("Bearer $token", body)
+            if (response.status == "success") {
+                UiState.Success(response.message ?: "Kehadiran berhasil diperbarui.")
+            } else {
+                UiState.Error(response.message ?: "Gagal memperbarui kehadiran.")
             }
         } catch (e: Exception) {
             UiState.Error(friendlyError(e))

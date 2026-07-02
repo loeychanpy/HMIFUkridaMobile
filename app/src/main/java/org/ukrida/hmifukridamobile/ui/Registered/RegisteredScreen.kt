@@ -1,5 +1,6 @@
 package org.ukrida.hmifukridamobile.ui.registered
 
+import org.ukrida.hmifukridamobile.ui.viewmodel.RegisteredViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

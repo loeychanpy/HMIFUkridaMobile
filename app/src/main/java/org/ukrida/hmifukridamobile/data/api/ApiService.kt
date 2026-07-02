@@ -32,6 +32,12 @@ interface ApiService {
     @GET("routes/users.php")
     suspend fun getAllUsers(@Header("Authorization") token: String): ApiResponse<List<User>>
 
+    @POST("routes/delete_user.php")
+    suspend fun deleteUser(
+        @Header("Authorization") token: String,
+        @Body body: Map<String, Int>
+    ): ApiResponse<Unit>
+
     // --- Events ---
 
     @GET("routes/events.php")
@@ -39,6 +45,9 @@ interface ApiService {
 
     @GET("routes/event_history.php")
     suspend fun getEventHistory(@Header("Authorization") token: String): ApiResponse<List<Event>>
+
+    @GET("routes/my_registrations.php")
+    suspend fun getMyRegistrations(@Header("Authorization") token: String): ApiResponse<List<Event>>
 
     @GET("routes/event_detail.php")
     suspend fun getEventById(
@@ -48,6 +57,12 @@ interface ApiService {
 
     @POST("routes/events.php")
     suspend fun createEvent(
+        @Header("Authorization") token: String,
+        @Body body: Map<String, String>
+    ): ApiResponse<Unit>
+
+    @POST("routes/update_event.php")
+    suspend fun updateEvent(
         @Header("Authorization") token: String,
         @Body body: Map<String, String>
     ): ApiResponse<Unit>
@@ -71,6 +86,18 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("event_id") eventId: Int
     ): ApiResponse<List<EventRegistrant>>
+
+    @POST("routes/checkin.php")
+    suspend fun checkIn(
+        @Header("Authorization") token: String,
+        @Body body: Map<String, Int>
+    ): ApiResponse<Unit>
+
+    @POST("routes/attendance.php")
+    suspend fun markAttendance(
+        @Header("Authorization") token: String,
+        @Body body: Map<String, @JvmSuppressWildcards Any>
+    ): ApiResponse<Unit>
 
     // --- Announcements ---
 

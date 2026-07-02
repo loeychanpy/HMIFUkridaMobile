@@ -9,16 +9,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -92,14 +95,38 @@ fun RegisteredCard(
 
                 Spacer(modifier = Modifier.height(18.dp))
 
-                Button(
+                Row(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1565C0)),
-                    onClick = {
-                        navController.navigate(Screen.Detail.createRoute(event.id))
-                    }
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("View Detail")
+                    Button(
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1565C0)),
+                        onClick = {
+                            navController.navigate(Screen.Detail.createRoute(event.id))
+                        }
+                    ) {
+                        Text("Detail")
+                    }
+
+                    if (event.registrationId != null) {
+                        OutlinedButton(
+                            modifier = Modifier.weight(1f),
+                            onClick = {
+                                navController.navigate(
+                                    Screen.QrTicket.createRoute(event.registrationId, event.title)
+                                )
+                            }
+                        ) {
+                            Icon(
+                                Icons.Default.QrCode,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("QR")
+                        }
+                    }
                 }
             }
         }

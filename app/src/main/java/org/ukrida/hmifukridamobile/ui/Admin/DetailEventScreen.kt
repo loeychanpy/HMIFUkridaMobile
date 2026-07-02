@@ -1,5 +1,6 @@
 package org.ukrida.hmifukridamobile.ui.detail
 
+import org.ukrida.hmifukridamobile.ui.viewmodel.DetailEventViewModel
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -137,18 +139,38 @@ fun DetailEventScreen(
 
                     Spacer(modifier = Modifier.height(32.dp))
 
-                    Button(
-                        modifier = Modifier.fillMaxWidth(),
-                        enabled = viewModel.registerState !is UiState.Loading,
-                        onClick = { viewModel.registerForEvent() }
-                    ) {
-                        if (viewModel.registerState is UiState.Loading) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(20.dp),
-                                strokeWidth = 2.dp
+                    if (viewModel.isAlreadyRegistered) {
+                        Button(
+                            modifier = Modifier.fillMaxWidth(),
+                            enabled = false,
+                            colors = ButtonDefaults.buttonColors(
+                                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                disabledContentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                            ),
+                            onClick = {}
+                        ) {
+                            Icon(
+                                Icons.Default.CheckCircle,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
                             )
-                        } else {
-                            Text("Register Event")
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Kamu sudah terdaftar di event ini")
+                        }
+                    } else {
+                        Button(
+                            modifier = Modifier.fillMaxWidth(),
+                            enabled = viewModel.registerState !is UiState.Loading,
+                            onClick = { viewModel.registerForEvent() }
+                        ) {
+                            if (viewModel.registerState is UiState.Loading) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(20.dp),
+                                    strokeWidth = 2.dp
+                                )
+                            } else {
+                                Text("Register Event")
+                            }
                         }
                     }
 

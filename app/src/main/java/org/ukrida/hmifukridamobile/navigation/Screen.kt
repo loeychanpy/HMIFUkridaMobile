@@ -20,7 +20,9 @@ sealed class Screen(val route: String) {
 
     object AddEvent : Screen("add_event")
 
-    object EditEvent : Screen("edit_event")
+    object EditEvent : Screen("edit_event/{eventId}") {
+        fun createRoute(eventId: Int) = "edit_event/$eventId"
+    }
 
     object Registered : Screen("registered")
 
@@ -34,6 +36,19 @@ sealed class Screen(val route: String) {
         fun createRoute(eventId: Int) = "admin_event_detail/$eventId"
     }
 
-    object HistoryDetail : Screen("history_detail")
+    object HistoryDetail : Screen("history_detail/{eventId}") {
+        fun createRoute(eventId: Int) = "history_detail/$eventId"
+    }
+
+    object ManageEvents : Screen("manage_events")
+
+    object UserManagement : Screen("user_management")
+
+    object QrTicket : Screen("qr_ticket/{registrationId}/{eventTitle}") {
+        fun createRoute(registrationId: Int, eventTitle: String): String {
+            val encoded = java.net.URLEncoder.encode(eventTitle, "UTF-8")
+            return "qr_ticket/$registrationId/$encoded"
+        }
+    }
 
 }

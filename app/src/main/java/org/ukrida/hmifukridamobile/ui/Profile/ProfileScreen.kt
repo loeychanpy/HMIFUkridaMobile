@@ -1,5 +1,6 @@
 package org.ukrida.hmifukridamobile.ui.profile
 
+import org.ukrida.hmifukridamobile.ui.viewmodel.ProfileViewModel
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle

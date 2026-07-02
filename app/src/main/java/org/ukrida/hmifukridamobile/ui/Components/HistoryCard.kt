@@ -103,7 +103,7 @@ fun HistoryCard(
 
                 Text(
 
-                    "Participants : 120"
+                    "Participants : ${event.participantCount}"
 
                 )
 

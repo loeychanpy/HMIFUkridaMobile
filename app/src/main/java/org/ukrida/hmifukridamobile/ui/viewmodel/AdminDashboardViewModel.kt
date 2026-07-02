@@ -1,4 +1,4 @@
-package org.ukrida.hmifukridamobile.ui.admin
+package org.ukrida.hmifukridamobile.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,8 +38,16 @@ class AdminDashboardViewModel(
             eventsState = eventRepo.getEvents(token)
             val usersResult = userRepo.getAllUsers(token)
             if (usersResult is UiState.Success) {
-                userCount = usersResult.data.size
+                userCount = usersResult.data.count { it.role == "mahasiswa" }
             }
+        }
+    }
+
+    fun deleteEvent(eventId: Int) {
+        viewModelScope.launch {
+            val token = tokenManager.getToken() ?: return@launch
+            eventRepo.deleteEvent(token, eventId)
+            eventsState = eventRepo.getEvents(token)
         }
     }
 

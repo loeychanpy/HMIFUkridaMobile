@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.ManageAccounts
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -102,20 +103,6 @@ fun AdminDrawer(
 
         DrawerItem(
 
-            icon = Icons.Default.Add,
-
-            title = "Add Event"
-
-        ){
-
-            navController.navigate(
-                Screen.AddEvent.route
-            )
-
-        }
-
-        DrawerItem(
-
             icon = Icons.Default.Event,
 
             title = "Manage Events"
@@ -123,21 +110,21 @@ fun AdminDrawer(
         ){
 
             navController.navigate(
-                Screen.AdminDashboard.route
+                Screen.ManageEvents.route
             )
 
         }
 
         DrawerItem(
 
-            icon = Icons.Default.Groups,
+            icon = Icons.Default.ManageAccounts,
 
-            title = "Participants"
+            title = "User Management"
 
         ){
 
             navController.navigate(
-                Screen.Participant.route
+                Screen.UserManagement.route
             )
 
         }

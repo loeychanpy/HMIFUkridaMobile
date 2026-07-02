@@ -1,5 +1,6 @@
 package org.ukrida.hmifukridamobile.ui.login
 
+import org.ukrida.hmifukridamobile.ui.viewmodel.LoginViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

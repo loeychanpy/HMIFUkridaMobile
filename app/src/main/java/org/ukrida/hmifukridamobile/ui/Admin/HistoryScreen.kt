@@ -1,5 +1,6 @@
 package org.ukrida.hmifukridamobile.ui.admin
 
+import org.ukrida.hmifukridamobile.ui.viewmodel.HistoryViewModel
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,16 +29,16 @@ import org.ukrida.hmifukridamobile.di.Injection
 import org.ukrida.hmifukridamobile.navigation.Screen
 import org.ukrida.hmifukridamobile.ui.components.HistoryCard
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(
     navController: NavController
 ) {
     val context = LocalContext.current
-    val viewModel: AdminDashboardViewModel = viewModel(
-        factory = AdminDashboardViewModel.factory(
+    val viewModel: HistoryViewModel = viewModel(
+        factory = HistoryViewModel.factory(
             Injection.provideEventRepository(),
-            Injection.provideUserRepository(),
             Injection.provideTokenManager(context)
         )
     )
@@ -55,7 +56,7 @@ fun HistoryScreen(
         }
     ) { padding ->
 
-        when (val state = viewModel.eventsState) {
+        when (val state = viewModel.historyState) {
             is UiState.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize().padding(padding),
@@ -82,7 +83,7 @@ fun HistoryScreen(
                         HistoryCard(
                             event = event,
                             onClick = {
-                                navController.navigate(Screen.HistoryDetail.route)
+                                navController.navigate(Screen.HistoryDetail.createRoute(event.id))
                             }
                         )
                     }

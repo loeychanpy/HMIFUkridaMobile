@@ -1,4 +1,4 @@
-package org.ukrida.hmifukridamobile.ui.profile
+package org.ukrida.hmifukridamobile.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

@@ -1,5 +1,7 @@
 package org.ukrida.hmifukridamobile.ui.admin
 
+import org.ukrida.hmifukridamobile.ui.viewmodel.AdminEventDetailViewModel
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -7,9 +9,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -21,14 +24,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
+import kotlinx.coroutines.launch
 import org.ukrida.hmifukridamobile.R
 import org.ukrida.hmifukridamobile.UiState
 import org.ukrida.hmifukridamobile.di.Injection
 import org.ukrida.hmifukridamobile.navigation.Screen
-import org.ukrida.hmifukridamobile.ui.Components.ParticipantApproveCard
+import org.ukrida.hmifukridamobile.ui.components.ParticipantApproveCard
+import org.ukrida.hmifukridamobile.util.ExportUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,9 +55,46 @@ fun AdminEventDetailScreen(
     )
 
     var expanded by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    val scanLauncher = rememberLauncherForActivityResult(ScanContract()) { result ->
+        val raw = result.contents ?: return@rememberLauncherForActivityResult
+        val registrationId = raw.removePrefix("HMIF:REG:").toIntOrNull()
+        if (registrationId != null) {
+            viewModel.checkInByQr(registrationId)
+        } else {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("QR tidak valid.")
+            }
+        }
+    }
+
+    LaunchedEffect(viewModel.checkInMessage) {
+        viewModel.checkInMessage?.let { msg ->
+            snackbarHostState.showSnackbar(msg)
+            viewModel.clearCheckInMessage()
+        }
+    }
 
     Scaffold(
         containerColor = Color(0xFFF4F6FA),
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    val opts = ScanOptions().apply {
+                        setPrompt("Arahkan kamera ke QR tiket peserta")
+                        setBeepEnabled(true)
+                        setOrientationLocked(false)
+                    }
+                    scanLauncher.launch(opts)
+                },
+                containerColor = Color(0xFF1565C0)
+            ) {
+                Icon(Icons.Default.QrCodeScanner, contentDescription = "Scan QR", tint = Color.White)
+            }
+        },
         topBar = {
             TopAppBar(
                 title = { Text("HMIF-U Mobile") },
@@ -59,6 +104,23 @@ fun AdminEventDetailScreen(
                     }
                 },
                 actions = {
+                    val registrantsForExport =
+                        (viewModel.registrantsState as? UiState.Success)?.data ?: emptyList()
+                    val eventTitleForExport =
+                        (viewModel.eventState as? UiState.Success)?.data?.title ?: "event"
+
+                    IconButton(onClick = {
+                        coroutineScope.launch {
+                            ExportUtils.exportRegistrantsToXlsx(
+                                context,
+                                registrantsForExport,
+                                eventTitleForExport
+                            )
+                        }
+                    }) {
+                        Icon(Icons.Default.FileDownload, contentDescription = "Export to Excel")
+                    }
+
                     Box {
                         IconButton(onClick = { expanded = true }) {
                             Icon(Icons.Default.MoreVert, null)
@@ -71,7 +133,7 @@ fun AdminEventDetailScreen(
                                 text = { Text("Edit Event") },
                                 onClick = {
                                     expanded = false
-                                    navController.navigate(Screen.EditEvent.route)
+                                    navController.navigate(Screen.EditEvent.createRoute(eventId))
                                 }
                             )
                             DropdownMenuItem(
@@ -150,17 +212,35 @@ fun AdminEventDetailScreen(
 
                     item {
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceEvenly
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(110.dp), // Using a fixed height to guarantee identical box sizes
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            val total = if (registrantsState is UiState.Success)
-                                registrantsState.data.size else 0
-                            EventStat(number = total.toString(), title = "Participants")
+                            val registrantsList = (registrantsState as? UiState.Success)?.data ?: emptyList()
+                            EventStat(
+                                number = registrantsList.size.toString(),
+                                title = "Peserta",
+                                modifier = Modifier.weight(1f)
+                            )
+                            EventStat(
+                                number = registrantsList.count { it.attended }.toString(),
+                                title = "Hadir",
+                                modifier = Modifier.weight(1f)
+                            )
+                            EventStat(
+                                number = registrantsList.count { !it.attended }.toString(),
+                                title = "Belum Hadir",
+                                modifier = Modifier.weight(1f)
+                            )
                         }
                     }
 
                     item {
-                        Card(shape = RoundedCornerShape(20.dp)) {
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(20.dp)
+                        ) {
                             Column(modifier = Modifier.padding(20.dp)) {
                                 AdminInfoRow(Icons.Default.Today, event.eventDate)
                                 Spacer(modifier = Modifier.height(12.dp))
@@ -171,7 +251,7 @@ fun AdminEventDetailScreen(
 
                     item {
                         Text(
-                            "Participants",
+                            "Daftar Peserta & Kehadiran",
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold
                         )
@@ -189,8 +269,13 @@ fun AdminEventDetailScreen(
                             Text(registrantsState.message, color = MaterialTheme.colorScheme.error)
                         }
 
-                        is UiState.Success -> items(registrantsState.data) {
-                            ParticipantApproveCard(registrant = it)
+                        is UiState.Success -> items(registrantsState.data) { registrant ->
+                            ParticipantApproveCard(
+                                registrant = registrant,
+                                onAttendanceToggle = { registrationId, attended ->
+                                    viewModel.markAttendance(registrationId, attended)
+                                }
+                            )
                         }
                     }
                 }
@@ -209,23 +294,34 @@ fun AdminInfoRow(icon: ImageVector, value: String) {
 }
 
 @Composable
-fun EventStat(number: String, title: String) {
+fun EventStat(number: String, title: String, modifier: Modifier = Modifier) {
     Card(
+        modifier = modifier.fillMaxHeight(),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = number,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF1565C0)
+                color = Color(0xFF1565C0),
+                textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(4.dp))
-            Text(text = title, color = Color.Gray)
+            Text(
+                text = title,
+                color = Color.Gray,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                lineHeight = MaterialTheme.typography.bodyMedium.lineHeight
+            )
         }
     }
 }

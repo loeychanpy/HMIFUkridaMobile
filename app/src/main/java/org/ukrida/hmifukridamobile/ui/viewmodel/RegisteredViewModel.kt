@@ -1,4 +1,4 @@
-package org.ukrida.hmifukridamobile.ui.home
+package org.ukrida.hmifukridamobile.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,7 +12,7 @@ import org.ukrida.hmifukridamobile.data.local.TokenManager
 import org.ukrida.hmifukridamobile.data.model.Event
 import org.ukrida.hmifukridamobile.data.repository.EventRepository
 
-class HomeViewModel(
+class RegisteredViewModel(
     private val eventRepo: EventRepository,
     private val tokenManager: TokenManager
 ) : ViewModel() {
@@ -20,21 +20,17 @@ class HomeViewModel(
     var eventsState by mutableStateOf<UiState<List<Event>>>(UiState.Loading)
         private set
 
-    var userName by mutableStateOf("")
-        private set
-
     init {
-        loadData()
+        loadEvents()
     }
 
-    private fun loadData() {
+    private fun loadEvents() {
         viewModelScope.launch {
-            userName = tokenManager.getName() ?: ""
             val token = tokenManager.getToken() ?: run {
                 eventsState = UiState.Error("Sesi tidak ditemukan. Silakan login ulang.")
                 return@launch
             }
-            eventsState = eventRepo.getEvents(token)
+            eventsState = eventRepo.getMyRegistrations(token)
         }
     }
 
@@ -43,7 +39,7 @@ class HomeViewModel(
             object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T =
-                    HomeViewModel(eventRepo, tokenManager) as T
+                    RegisteredViewModel(eventRepo, tokenManager) as T
             }
     }
 }

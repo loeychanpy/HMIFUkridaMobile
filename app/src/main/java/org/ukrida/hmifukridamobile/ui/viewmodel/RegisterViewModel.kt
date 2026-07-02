@@ -1,4 +1,4 @@
-package org.ukrida.hmifukridamobile.ui.register
+package org.ukrida.hmifukridamobile.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,6 +21,10 @@ class RegisterViewModel(
         when {
             name.isBlank() || nim.isBlank() || email.isBlank() || password.isBlank() || confirmPassword.isBlank() -> {
                 uiState = UiState.Error("Semua kolom harus diisi.")
+                return
+            }
+            !email.endsWith("@civitas.ukrida.ac.id") -> {
+                uiState = UiState.Error("Email harus menggunakan domain @civitas.ukrida.ac.id.")
                 return
             }
             password != confirmPassword -> {

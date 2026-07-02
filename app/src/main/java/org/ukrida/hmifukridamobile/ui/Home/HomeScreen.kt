@@ -1,17 +1,21 @@
 package org.ukrida.hmifukridamobile.ui.home
 
+import org.ukrida.hmifukridamobile.ui.viewmodel.HomeViewModel
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -43,6 +47,8 @@ fun HomeScreen(
     )
 
     var search by remember { mutableStateOf("") }
+    var selectedCategory by remember { mutableStateOf("All") }
+    val categories = listOf("All", "Seminar", "Workshop", "Competition", "Talkshow", "Webinar")
 
     Scaffold(
         topBar = {
@@ -88,10 +94,11 @@ fun HomeScreen(
             }
 
             is UiState.Success -> {
-                val filtered = if (search.isBlank()) state.data
-                else state.data.filter {
-                    it.title.contains(search, ignoreCase = true) ||
+                val filtered = state.data.filter {
+                    val matchesSearch = it.title.contains(search, ignoreCase = true) ||
                             it.location.contains(search, ignoreCase = true)
+                    val matchesCategory = selectedCategory == "All" || it.category.equals(selectedCategory, ignoreCase = true)
+                    matchesSearch && matchesCategory
                 }
 
                 LazyColumn(
@@ -106,6 +113,21 @@ fun HomeScreen(
                             value = search,
                             onValueChange = { search = it }
                         )
+                    }
+
+                    item {
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            items(categories) { category ->
+                                FilterChip(
+                                    selected = selectedCategory == category,
+                                    onClick = { selectedCategory = category },
+                                    label = { Text(category) }
+                                )
+                            }
+                        }
                     }
 
                     item {

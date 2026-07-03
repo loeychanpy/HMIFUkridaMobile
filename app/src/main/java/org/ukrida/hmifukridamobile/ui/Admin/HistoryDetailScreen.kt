@@ -10,7 +10,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -105,7 +104,7 @@ fun HistoryDetailScreen(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    Text(text = event.description, color = Color.Gray)
+                    Text(text = event.description, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }
@@ -120,7 +119,7 @@ fun HistoryInfo(title: String, value: String) {
             .padding(vertical = 10.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(title, style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
+        Text(title, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Text(value, fontWeight = FontWeight.SemiBold)
     }
 }

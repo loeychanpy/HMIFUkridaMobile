@@ -11,7 +11,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.ukrida.hmifukridamobile.data.model.EventRegistrant
@@ -21,6 +20,8 @@ fun ParticipantApproveCard(
     registrant: EventRegistrant,
     onAttendanceToggle: (registrationId: Int, attended: Boolean) -> Unit = { _, _ -> }
 ) {
+    val colors = MaterialTheme.colorScheme
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -28,11 +29,11 @@ fun ParticipantApproveCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Surface(shape = CircleShape, color = Color(0xFFE3F2FD)) {
+                Surface(shape = CircleShape, color = colors.primaryContainer) {
                     Icon(
                         imageVector = Icons.Default.Person,
                         contentDescription = null,
-                        tint = Color(0xFF1565C0),
+                        tint = colors.onPrimaryContainer,
                         modifier = Modifier.padding(12.dp)
                     )
                 }
@@ -41,15 +42,15 @@ fun ParticipantApproveCard(
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(registrant.name, fontWeight = FontWeight.Bold)
-                    Text(registrant.nim, color = Color.Gray)
+                    Text(registrant.nim, color = colors.onSurfaceVariant)
                     Text(
                         registrant.email,
-                        color = Color.Gray,
+                        color = colors.onSurfaceVariant,
                         style = MaterialTheme.typography.bodySmall
                     )
                     Text(
                         "Daftar: ${registrant.registeredAt}",
-                        color = Color.Gray,
+                        color = colors.onSurfaceVariant,
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
@@ -61,38 +62,28 @@ fun ParticipantApproveCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                // Hadir button
                 Button(
                     modifier = Modifier.weight(1f),
                     onClick = { onAttendanceToggle(registrant.registrationId, true) },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (registrant.attended) Color(0xFF2E7D32) else Color(0xFFE8F5E9),
-                        contentColor   = if (registrant.attended) Color.White else Color(0xFF2E7D32)
+                        containerColor = if (registrant.attended) colors.tertiary else colors.tertiaryContainer,
+                        contentColor = if (registrant.attended) colors.onTertiary else colors.onTertiaryContainer
                     )
                 ) {
-                    Icon(
-                        Icons.Default.CheckCircle,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp)
-                    )
+                    Icon(Icons.Default.CheckCircle, contentDescription = null, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(4.dp))
                     Text("Hadir", style = MaterialTheme.typography.labelMedium)
                 }
 
-                // Tidak Hadir button
                 Button(
                     modifier = Modifier.weight(1f),
                     onClick = { onAttendanceToggle(registrant.registrationId, false) },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (!registrant.attended) Color(0xFFC62828) else Color(0xFFFFEBEE),
-                        contentColor   = if (!registrant.attended) Color.White else Color(0xFFC62828)
+                        containerColor = if (!registrant.attended) colors.error else colors.errorContainer,
+                        contentColor = if (!registrant.attended) colors.onError else colors.onErrorContainer
                     )
                 ) {
-                    Icon(
-                        Icons.Outlined.Cancel,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp)
-                    )
+                    Icon(Icons.Outlined.Cancel, contentDescription = null, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(4.dp))
                     Text("Tidak Hadir", style = MaterialTheme.typography.labelMedium)
                 }

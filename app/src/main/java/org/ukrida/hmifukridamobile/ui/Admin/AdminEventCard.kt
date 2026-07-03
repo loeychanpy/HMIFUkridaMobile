@@ -33,7 +33,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -219,7 +218,7 @@ fun AdminEventCard(
 
                         contentDescription = null,
 
-                        tint = Color.Gray,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
 
                         modifier = Modifier.size(18.dp)
 
@@ -231,7 +230,7 @@ fun AdminEventCard(
 
                         modifier = Modifier.padding(start = 8.dp),
 
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
 
                         style = MaterialTheme.typography.bodyMedium
 
@@ -255,7 +254,7 @@ fun AdminEventCard(
 
                         contentDescription = null,
 
-                        tint = Color.Gray,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
 
                         modifier = Modifier.size(18.dp)
 
@@ -267,7 +266,7 @@ fun AdminEventCard(
 
                         modifier = Modifier.padding(start = 8.dp),
 
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
 
                         style = MaterialTheme.typography.bodyMedium
 
@@ -285,7 +284,7 @@ fun AdminEventCard(
 
                     style = MaterialTheme.typography.bodyMedium,
 
-                    color = Color(0xFF1565C0),
+                    color = MaterialTheme.colorScheme.primary,
 
                     fontWeight = FontWeight.SemiBold
 
@@ -299,7 +298,7 @@ fun AdminEventCard(
 
                     modifier = Modifier
                         .background(
-                            if (isOpen) Color(0xFFE8F5E9) else Color(0xFFEEEEEE),
+                            if (isOpen) MaterialTheme.colorScheme.tertiaryContainer else MaterialTheme.colorScheme.surfaceVariant,
                             RoundedCornerShape(50.dp)
                         )
                         .padding(
@@ -313,7 +312,7 @@ fun AdminEventCard(
 
                         text = if (isOpen) "Open Registration" else "Closed",
 
-                        color = if (isOpen) Color(0xFF2E7D32) else Color.Gray,
+                        color = if (isOpen) MaterialTheme.colorScheme.onTertiaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
 
                         style = MaterialTheme.typography.labelMedium,
 

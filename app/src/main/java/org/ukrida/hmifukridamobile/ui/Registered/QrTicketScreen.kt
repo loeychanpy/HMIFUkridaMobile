@@ -24,7 +24,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -70,14 +69,14 @@ fun QrTicketScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFF4F6FA))
+                .background(MaterialTheme.colorScheme.background)
                 .padding(padding),
             contentAlignment = Alignment.Center
         ) {
             Card(
                 shape = RoundedCornerShape(24.dp),
                 elevation = CardDefaults.cardElevation(8.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White)
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
                 Column(
                     modifier = Modifier.padding(32.dp),
@@ -87,7 +86,7 @@ fun QrTicketScreen(
                     Text(
                         text = "Tiket Kehadiran",
                         style = MaterialTheme.typography.labelMedium,
-                        color = Color.Gray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -112,7 +111,7 @@ fun QrTicketScreen(
                     Text(
                         text = "Tunjukkan QR ini ke panitia",
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center
                     )
 
@@ -121,7 +120,7 @@ fun QrTicketScreen(
                     Text(
                         text = "REG #$registrationId",
                         style = MaterialTheme.typography.labelSmall,
-                        color = Color(0xFF1565C0),
+                        color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold
                     )
                 }

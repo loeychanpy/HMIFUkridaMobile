@@ -18,7 +18,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -78,7 +77,7 @@ fun AdminEventDetailScreen(
     }
 
     Scaffold(
-        containerColor = Color(0xFFF4F6FA),
+        containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = { SnackbarHost(snackbarHostState) },
         floatingActionButton = {
             FloatingActionButton(
@@ -86,13 +85,14 @@ fun AdminEventDetailScreen(
                     val opts = ScanOptions().apply {
                         setPrompt("Arahkan kamera ke QR tiket peserta")
                         setBeepEnabled(true)
-                        setOrientationLocked(false)
+                        setOrientationLocked(true)
+                        setCaptureActivity(PortraitCaptureActivity::class.java)
                     }
                     scanLauncher.launch(opts)
                 },
-                containerColor = Color(0xFF1565C0)
+                containerColor = MaterialTheme.colorScheme.primary
             ) {
-                Icon(Icons.Default.QrCodeScanner, contentDescription = "Scan QR", tint = Color.White)
+                Icon(Icons.Default.QrCodeScanner, contentDescription = "Scan QR", tint = MaterialTheme.colorScheme.onPrimary)
             }
         },
         topBar = {
@@ -178,7 +178,7 @@ fun AdminEventDetailScreen(
                     verticalArrangement = Arrangement.spacedBy(18.dp)
                 ) {
                     item {
-                        Text("Admin Dashboard / Event Detail", color = Color.Gray)
+                        Text("Admin Dashboard / Event Detail", color = MaterialTheme.colorScheme.onSurfaceVariant)
                         Spacer(modifier = Modifier.height(12.dp))
 
                         Card(
@@ -205,7 +205,7 @@ fun AdminEventDetailScreen(
 
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        Text(event.description, color = Color.Gray)
+                        Text(event.description, color = MaterialTheme.colorScheme.onSurfaceVariant)
 
                         Spacer(modifier = Modifier.height(24.dp))
                     }
@@ -287,7 +287,7 @@ fun AdminEventDetailScreen(
 @Composable
 fun AdminInfoRow(icon: ImageVector, value: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Icon(imageVector = icon, contentDescription = null, tint = Color(0xFF1565C0))
+        Icon(imageVector = icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
         Spacer(modifier = Modifier.width(12.dp))
         Text(value)
     }
@@ -311,13 +311,13 @@ fun EventStat(number: String, title: String, modifier: Modifier = Modifier) {
                 text = number,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF1565C0),
+                color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = title,
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 lineHeight = MaterialTheme.typography.bodyMedium.lineHeight

@@ -22,7 +22,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -67,7 +66,7 @@ fun RegisterScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF4F6FA))
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier
@@ -80,7 +79,7 @@ fun RegisterScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 elevation = CardDefaults.cardElevation(10.dp)
             ) {
                 Column(
@@ -99,10 +98,10 @@ fun RegisterScreen(
                         "HMIF-U Mobile",
                         fontSize = 26.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1565C0)
+                        color = MaterialTheme.colorScheme.primary
                     )
 
-                    Text("Informatics Student Union Portal", color = Color.Gray)
+                    Text("Informatics Student Union Portal", color = MaterialTheme.colorScheme.onSurfaceVariant)
 
                     Spacer(modifier = Modifier.height(24.dp))
 
@@ -112,12 +111,12 @@ fun RegisterScreen(
                     ) {
                         Text(
                             "Log In",
-                            color = Color.Gray,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.clickable { navController.popBackStack() }
                         )
                         Text(
                             "Register",
-                            color = Color(0xFF1565C0),
+                            color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -137,8 +136,8 @@ fun RegisterScreen(
                         shape = RoundedCornerShape(14.dp),
                         singleLine = true,
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color(0xFF1565C0),
-                            unfocusedBorderColor = Color.LightGray
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
                         )
                     )
 
@@ -153,8 +152,8 @@ fun RegisterScreen(
                         shape = RoundedCornerShape(14.dp),
                         singleLine = true,
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color(0xFF1565C0),
-                            unfocusedBorderColor = Color.LightGray
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
                         )
                     )
 
@@ -169,8 +168,8 @@ fun RegisterScreen(
                         shape = RoundedCornerShape(14.dp),
                         singleLine = true,
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color(0xFF1565C0),
-                            unfocusedBorderColor = Color.LightGray
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
                         )
                     )
 
@@ -196,8 +195,8 @@ fun RegisterScreen(
                         shape = RoundedCornerShape(14.dp),
                         singleLine = true,
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color(0xFF1565C0),
-                            unfocusedBorderColor = Color.LightGray
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
                         )
                     )
 
@@ -223,8 +222,8 @@ fun RegisterScreen(
                         shape = RoundedCornerShape(14.dp),
                         singleLine = true,
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color(0xFF1565C0),
-                            unfocusedBorderColor = Color.LightGray
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
                         )
                     )
 
@@ -243,7 +242,7 @@ fun RegisterScreen(
                     Spacer(modifier = Modifier.height(20.dp))
 
                     if (state is UiState.Error) {
-                        Text(text = state.message, color = Color.Red, fontSize = 13.sp)
+                        Text(text = state.message, color = MaterialTheme.colorScheme.error, fontSize = 13.sp)
                         Spacer(modifier = Modifier.height(10.dp))
                     }
 
@@ -255,16 +254,16 @@ fun RegisterScreen(
                             .fillMaxWidth()
                             .height(55.dp),
                         enabled = state !is UiState.Loading,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1565C0))
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         if (state is UiState.Loading) {
                             CircularProgressIndicator(
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(24.dp),
                                 strokeWidth = 2.dp
                             )
                         } else {
-                            Text("Create Account", color = Color.White)
+                            Text("Create Account")
                         }
                     }
 

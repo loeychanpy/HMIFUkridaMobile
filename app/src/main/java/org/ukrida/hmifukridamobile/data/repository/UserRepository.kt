@@ -60,6 +60,19 @@ class UserRepository(private val api: ApiService) {
         }
     }
 
+    suspend fun deleteUser(token: String, userId: Int): UiState<String> {
+        return try {
+            val response = api.deleteUser("Bearer $token", mapOf("user_id" to userId))
+            if (response.status == "success") {
+                UiState.Success(response.message ?: "User berhasil dihapus.")
+            } else {
+                UiState.Error(response.message ?: "Gagal menghapus user.")
+            }
+        } catch (e: Exception) {
+            UiState.Error(friendlyError(e))
+        }
+    }
+
     suspend fun getAllUsers(token: String): UiState<List<User>> {
         return try {
             val response = api.getAllUsers("Bearer $token")

@@ -32,7 +32,6 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -77,9 +76,9 @@ fun AdminDashboard(
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = { navController.navigate(Screen.AddEvent.route) },
-                    containerColor = Color(0xFF1565C0)
+                    containerColor = MaterialTheme.colorScheme.primary
                 ) {
-                    Icon(Icons.Default.Add, null, tint = Color.White)
+                    Icon(Icons.Default.Add, null, tint = MaterialTheme.colorScheme.onPrimary)
                 }
             }
         ) { padding ->
@@ -111,7 +110,7 @@ fun AdminDashboard(
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(Color(0xFFF4F6FA))
+                            .background(MaterialTheme.colorScheme.background)
                             .padding(padding),
                         contentPadding = PaddingValues(20.dp),
                         verticalArrangement = Arrangement.spacedBy(18.dp)
@@ -121,7 +120,7 @@ fun AdminDashboard(
                                 text = "Welcome Back 👋",
                                 style = MaterialTheme.typography.headlineSmall
                             )
-                            Text(text = "Administrator HMIF", color = Color.Gray)
+                            Text(text = "Administrator HMIF", color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Spacer(modifier = Modifier.height(20.dp))
                         }
 

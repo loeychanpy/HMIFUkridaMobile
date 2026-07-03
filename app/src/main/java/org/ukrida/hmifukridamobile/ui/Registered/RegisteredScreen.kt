@@ -19,7 +19,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -67,7 +66,7 @@ fun RegisteredScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0xFFF4F6FA))
+                        .background(MaterialTheme.colorScheme.background)
                         .padding(padding)
                 ) {
                     if (state.data.isEmpty()) {
@@ -75,7 +74,7 @@ fun RegisteredScreen(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("Belum ada event yang didaftarkan.", color = Color.Gray)
+                            Text("Belum ada event yang didaftarkan.", color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     } else {
                         Text(

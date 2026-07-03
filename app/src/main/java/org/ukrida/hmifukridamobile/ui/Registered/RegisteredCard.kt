@@ -26,7 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -46,10 +45,10 @@ fun RegisteredCard(
         Column {
             Text(
                 text = "Registered",
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color(0xFF1565C0))
+                    .background(MaterialTheme.colorScheme.primary)
                     .padding(horizontal = 16.dp, vertical = 10.dp),
                 fontWeight = FontWeight.Bold
             )
@@ -67,13 +66,13 @@ fun RegisteredCard(
                     Icon(
                         Icons.Default.CalendarMonth,
                         contentDescription = null,
-                        tint = Color.Gray,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(18.dp)
                     )
                     Text(
                         text = event.eventDate,
                         modifier = Modifier.padding(start = 8.dp),
-                        color = Color.Gray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
 
@@ -83,13 +82,13 @@ fun RegisteredCard(
                     Icon(
                         Icons.Default.LocationOn,
                         contentDescription = null,
-                        tint = Color.Gray,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(18.dp)
                     )
                     Text(
                         text = event.location,
                         modifier = Modifier.padding(start = 8.dp),
-                        color = Color.Gray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
 
@@ -101,7 +100,7 @@ fun RegisteredCard(
                 ) {
                     Button(
                         modifier = Modifier.weight(1f),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1565C0)),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                         onClick = {
                             navController.navigate(Screen.Detail.createRoute(event.id))
                         }

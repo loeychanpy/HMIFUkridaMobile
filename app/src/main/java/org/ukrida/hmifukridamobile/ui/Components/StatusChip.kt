@@ -7,31 +7,25 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun StatusChip(
-    status: String
-) {
+fun StatusChip(status: String) {
+    val colors = MaterialTheme.colorScheme
+
     val (background, textColor) = when (status) {
-        "Approved", "Hadir" -> Color(0xFF00C853).copy(alpha = 0.15f) to Color(0xFF00C853)
-        "Waiting", "Belum Hadir" -> Color(0xFFFFAB00).copy(alpha = 0.15f) to Color(0xFFFFAB00)
-        else -> Color(0xFFFF1744).copy(alpha = 0.15f) to Color(0xFFFF1744)
+        "Approved", "Hadir" -> colors.tertiaryContainer to colors.onTertiaryContainer
+        "Waiting", "Belum Hadir" -> colors.secondaryContainer to colors.onSecondaryContainer
+        else -> colors.errorContainer to colors.onErrorContainer
     }
 
     Text(
         text = status,
         color = textColor,
-        style = MaterialTheme.typography.labelSmall,
+        fontWeight = FontWeight.Bold,
         modifier = Modifier
-            .background(
-                background,
-                RoundedCornerShape(8.dp)
-            )
-            .padding(
-                horizontal = 12.dp,
-                vertical = 6.dp
-            )
+            .background(background, RoundedCornerShape(50))
+            .padding(horizontal = 12.dp, vertical = 6.dp)
     )
 }

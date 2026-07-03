@@ -25,171 +25,102 @@ import org.ukrida.hmifukridamobile.data.model.Event
 
 @Composable
 fun EventCard(
-
     event: Event,
-
     onClick: () -> Unit
-
 ) {
-
     Card(
-
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-
                 onClick()
-
             },
-
         shape = RoundedCornerShape(20.dp),
-
         elevation = CardDefaults.cardElevation(8.dp)
-
     ) {
-
         Column {
-
             Image(
-
                 painter = painterResource(id = R.drawable.ic_launcher_foreground),
-
                 contentDescription = null,
-
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(180.dp),
-
                 contentScale = ContentScale.Crop
-
             )
 
             Column(
-
                 modifier = Modifier.padding(18.dp)
-
             ) {
-
                 Text(
-
                     text = event.title,
-
                     style = MaterialTheme.typography.titleLarge,
-
                     fontWeight = FontWeight.Bold
-
                 )
 
                 Spacer(
-
                     modifier = Modifier.height(12.dp)
-
                 )
 
                 Row {
-
                     Icon(
-
                         Icons.Default.CalendarMonth,
-
                         null
-
                     )
 
                     Spacer(
-
                         modifier = Modifier.width(8.dp)
-
                     )
 
                     Text(
-
                         event.eventDate
-
                     )
-
                 }
 
                 Spacer(
-
                     modifier = Modifier.height(8.dp)
-
                 )
 
                 Row {
-
                     Icon(
-
                         Icons.Default.LocationOn,
-
                         null
-
                     )
 
                     Spacer(
-
                         modifier = Modifier.width(8.dp)
-
                     )
 
                     Text(
-
                         event.location
-
                     )
-
                 }
 
                 Spacer(
-
                     modifier = Modifier.height(16.dp)
-
                 )
 
                 Text(
-
                     event.description,
-
                     maxLines = 2
-
                 )
 
                 Spacer(
-
                     modifier = Modifier.height(20.dp)
-
                 )
 
                 Button(
-
                     modifier = Modifier.fillMaxWidth(),
-
                     onClick = {
-
                         onClick()
-
                     },
-
                     colors = ButtonDefaults.buttonColors(
-
                         containerColor = MaterialTheme.colorScheme.primary
-
                     )
-
                 ) {
-
                     Text(
-
                         "View Detail"
-
                     )
-
                 }
-
             }
-
         }
-
     }
-
 }

@@ -12,7 +12,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -57,7 +56,7 @@ fun AddEventScreen(
     }
 
     Scaffold(
-        containerColor = Color(0xFFF4F6FA),
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
                 title = { Text("HMIF-U Mobile") },
@@ -76,7 +75,7 @@ fun AddEventScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(20.dp)
         ) {
-            Text(text = "Admin Dashboard / Add Event", color = Color.Gray)
+            Text(text = "Admin Dashboard / Add Event", color = MaterialTheme.colorScheme.onSurfaceVariant)
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -87,7 +86,7 @@ fun AddEventScreen(
                 Column(modifier = Modifier.weight(1f)) {
                     Text(text = "Create Event", style = MaterialTheme.typography.headlineMedium)
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(text = "Create and publish event for HMIF students.", color = Color.Gray)
+                    Text(text = "Create and publish event for HMIF students.", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 AssistChip(
                     onClick = {},

@@ -32,13 +32,13 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -93,7 +93,7 @@ fun LoginScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF4F6FA))
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier
@@ -106,7 +106,7 @@ fun LoginScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 elevation = CardDefaults.cardElevation(10.dp)
             ) {
                 Column(
@@ -127,14 +127,14 @@ fun LoginScreen(
                         text = "HMIF-U Mobile",
                         fontSize = 26.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1565C0)
+                        color = MaterialTheme.colorScheme.primary
                     )
 
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
                         text = "Informatics Student Union Portal",
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 14.sp
                     )
 
@@ -146,13 +146,13 @@ fun LoginScreen(
                     ) {
                         Text(
                             text = "Log In",
-                            color = Color(0xFF1565C0),
+                            color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.clickable { }
                         )
                         Text(
                             text = "Register",
-                            color = Color.Gray,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.clickable {
                                 navController.navigate(Screen.Register.route)
                             }
@@ -177,8 +177,8 @@ fun LoginScreen(
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color(0xFF1565C0),
-                            unfocusedBorderColor = Color.LightGray
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
                         )
                     )
 
@@ -210,8 +210,8 @@ fun LoginScreen(
                         singleLine = true,
                         shape = RoundedCornerShape(14.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color(0xFF1565C0),
-                            unfocusedBorderColor = Color.LightGray
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
                         )
                     )
 
@@ -222,7 +222,7 @@ fun LoginScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Checkbox(checked = rememberMe, onCheckedChange = { rememberMe = it })
-                        Text(text = "Remember Me", color = Color.Gray)
+                        Text(text = "Remember Me", color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
 
                     Spacer(modifier = Modifier.height(20.dp))
@@ -230,7 +230,7 @@ fun LoginScreen(
                     if (state is UiState.Error) {
                         Text(
                             text = state.message,
-                            color = Color.Red,
+                            color = MaterialTheme.colorScheme.error,
                             fontSize = 13.sp
                         )
                         Spacer(modifier = Modifier.height(10.dp))
@@ -241,7 +241,7 @@ fun LoginScreen(
                             .fillMaxWidth()
                             .height(55.dp),
                         shape = RoundedCornerShape(14.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1565C0)),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                         enabled = state !is UiState.Loading,
                         onClick = {
                             if (email.isBlank() || password.isBlank()) return@Button
@@ -250,12 +250,12 @@ fun LoginScreen(
                     ) {
                         if (state is UiState.Loading) {
                             CircularProgressIndicator(
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(24.dp),
                                 strokeWidth = 2.dp
                             )
                         } else {
-                            Text(text = "Sign In", color = Color.White, fontSize = 18.sp)
+                            Text(text = "Sign In", fontSize = 18.sp)
                         }
                     }
 

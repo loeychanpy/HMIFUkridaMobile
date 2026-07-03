@@ -12,7 +12,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -69,7 +68,7 @@ fun EditEventScreen(
     }
 
     Scaffold(
-        containerColor = Color(0xFFF4F6FA),
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
                 title = { Text("HMIF-U Mobile") },
@@ -105,7 +104,7 @@ fun EditEventScreen(
                         .verticalScroll(rememberScrollState())
                         .padding(20.dp)
                 ) {
-                    Text(text = "Admin Dashboard / Edit Event", color = Color.Gray)
+                    Text(text = "Admin Dashboard / Edit Event", color = MaterialTheme.colorScheme.onSurfaceVariant)
 
                     Spacer(modifier = Modifier.height(20.dp))
 
@@ -116,7 +115,7 @@ fun EditEventScreen(
                         Column(modifier = Modifier.weight(1f)) {
                             Text(text = "Edit Event", style = MaterialTheme.typography.headlineMedium)
                             Spacer(modifier = Modifier.height(4.dp))
-                            Text(text = "Update information for this event.", color = Color.Gray)
+                            Text(text = "Update information for this event.", color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                         AssistChip(
                             onClick = {},
@@ -198,12 +197,12 @@ fun EditEventScreen(
                                     viewModel.updateEvent(title, date, time, description, location)
                                 },
                                 enabled = !isUpdating,
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1565C0))
+                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                             ) {
                                 if (isUpdating) {
                                     CircularProgressIndicator(
                                         modifier = Modifier.size(18.dp),
-                                        color = Color.White,
+                                        color = MaterialTheme.colorScheme.onPrimary,
                                         strokeWidth = 2.dp
                                     )
                                 } else {

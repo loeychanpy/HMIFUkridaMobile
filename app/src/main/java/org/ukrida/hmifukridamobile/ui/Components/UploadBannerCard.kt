@@ -13,94 +13,52 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun UploadBannerCard(
-
-    onClick: () -> Unit = {}
-
-) {
-
+fun UploadBannerCard(onClick: () -> Unit = {}) {
     Column {
-
         Text(
-
             text = "Event Banner *",
-
             style = MaterialTheme.typography.titleSmall
-
         )
 
         Spacer(modifier = Modifier.height(10.dp))
 
         Box(
-
             modifier = Modifier
                 .fillMaxWidth()
                 .height(170.dp)
                 .border(
-                    BorderStroke(
-                        1.5.dp,
-                        Color(0xFF1565C0)
-                    ),
+                    BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary),
                     RoundedCornerShape(14.dp)
                 )
-                .clickable {
-
-                    onClick()
-
-                },
-
+                .clickable { onClick() },
             contentAlignment = Alignment.Center
-
         ) {
-
-            Column(
-
-                horizontalAlignment = Alignment.CenterHorizontally
-
-            ) {
-
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(
-
                     imageVector = Icons.Outlined.AddPhotoAlternate,
-
                     contentDescription = null,
-
-                    tint = Color(0xFF1565C0),
-
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(48.dp)
-
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
-
                     text = "Upload Banner",
-
-                    color = Color(0xFF1565C0)
-
+                    color = MaterialTheme.colorScheme.primary
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-
                     text = "PNG / JPG (Max 5 MB)",
-
-                    color = Color.Gray,
-
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodySmall
-
                 )
-
             }
-
         }
-
     }
-
 }

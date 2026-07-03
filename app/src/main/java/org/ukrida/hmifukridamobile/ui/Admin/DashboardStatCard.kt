@@ -11,7 +11,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,9 +33,7 @@ fun DashboardStatCard(
         elevation = CardDefaults.cardElevation(8.dp),
 
         colors = CardDefaults.cardColors(
-
-            containerColor = Color(0xFF1565C0)
-
+            containerColor = MaterialTheme.colorScheme.primaryContainer
         )
 
     ) {
@@ -59,7 +56,7 @@ fun DashboardStatCard(
 
                 fontWeight = FontWeight.Bold,
 
-                color = Color.White
+                color = MaterialTheme.colorScheme.onPrimaryContainer
 
             )
 
@@ -69,7 +66,7 @@ fun DashboardStatCard(
 
                 style = MaterialTheme.typography.bodyMedium,
 
-                color = Color.White.copy(alpha = 0.85f)
+                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.85f)
 
             )
 

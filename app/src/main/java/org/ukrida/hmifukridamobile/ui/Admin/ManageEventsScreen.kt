@@ -54,7 +54,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -98,9 +97,9 @@ fun ManageEventsScreen(navController: NavController) {
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navController.navigate(Screen.AddEvent.route) },
-                containerColor = Color(0xFF1565C0)
+                containerColor = MaterialTheme.colorScheme.primary
             ) {
-                Icon(Icons.Default.Add, null, tint = Color.White)
+                Icon(Icons.Default.Add, null, tint = MaterialTheme.colorScheme.onPrimary)
             }
         }
     ) { padding ->
@@ -147,7 +146,7 @@ fun ManageEventsScreen(navController: NavController) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0xFFF4F6FA))
+                        .background(MaterialTheme.colorScheme.background)
                         .padding(padding)
                 ) {
                     OutlinedTextField(
@@ -161,17 +160,17 @@ fun ManageEventsScreen(navController: NavController) {
                         singleLine = true,
                         shape = RoundedCornerShape(14.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color(0xFF1565C0),
-                            unfocusedBorderColor = Color.LightGray,
-                            unfocusedContainerColor = Color.White,
-                            focusedContainerColor = Color.White
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                            focusedContainerColor = MaterialTheme.colorScheme.surface
                         )
                     )
 
                     ScrollableTabRow(
                         selectedTabIndex = selectedTab,
-                        containerColor = Color(0xFFF4F6FA),
-                        contentColor = Color(0xFF1565C0),
+                        containerColor = MaterialTheme.colorScheme.background,
+                        contentColor = MaterialTheme.colorScheme.primary,
                         edgePadding = 16.dp
                     ) {
                         tabs.forEachIndexed { index, label ->
@@ -190,7 +189,7 @@ fun ManageEventsScreen(navController: NavController) {
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("Tidak ada event ditemukan.", color = Color.Gray)
+                            Text("Tidak ada event ditemukan.", color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     } else {
                         LazyColumn(
@@ -268,7 +267,7 @@ private fun ManageEventRow(
             .clickable { onViewDetail() },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -327,40 +326,40 @@ private fun ManageEventRow(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         Icons.Default.CalendarMonth, null,
-                        tint = Color.Gray,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(14.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = event.eventDate.take(10),
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         Icons.Default.LocationOn, null,
-                        tint = Color.Gray,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(14.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = event.location,
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         Icons.Default.Group, null,
-                        tint = Color(0xFF1565C0),
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(14.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = "${event.participantCount}",
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color(0xFF1565C0),
+                        color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
@@ -371,8 +370,9 @@ private fun ManageEventRow(
 
 @Composable
 private fun StatusBadge(isUpcoming: Boolean) {
-    val bg = if (isUpcoming) Color(0xFFE8F5E9) else Color(0xFFEEEEEE)
-    val textColor = if (isUpcoming) Color(0xFF2E7D32) else Color.Gray
+    val colors = MaterialTheme.colorScheme
+    val bg = if (isUpcoming) colors.tertiaryContainer else colors.surfaceVariant
+    val textColor = if (isUpcoming) colors.onTertiaryContainer else colors.onSurfaceVariant
     val label = if (isUpcoming) "Upcoming" else "Closed"
 
     Text(
